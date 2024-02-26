@@ -1,11 +1,19 @@
 
-// TODO
 /*
-- Add MATLAB handshake to EstablishUSBConnection() or triage to Arduino serial port
-- Add manual control mode in Arduino using Serial -> Ask which motor, then what angle ("x" to cancel)
-- Make q_STS & q_dot_STS private!
-- Use getters & setters
-- Add switch statements to loop
+Robotics_Systems_Library.cpp
+--------------------------
+Licenting Information: You are free to use or extend this project
+for educational purposes provided that (1) you do not distribute or
+publish solutions, (2) you retain this notice, and (3) you provide
+clear attribution to the University of Melbourne, Department of
+Mechanical Engineering and Product Design Lab.
+
+Attribution Information: The ChessBot project was developed in collaboration
+between Product Design Lab & the University of Melbourne. The core project was
+primarily developed by Professor Denny Oetomo (doetomo@unimelb.edu.au). All
+Starter Code and libraries were developed by Nathan Batham of Product
+Design Lab
+(nathan@productdesignlab.com.au)
 
 */
 
@@ -44,8 +52,7 @@ int UOM_RS_Robot::EstablishUSBConnection() {
   if (connection_status == ERROR) {
     Serial.println("Failed to connect to MATLAB. Connecting to Arduino serial monitor instead.");          
   }
-
-  // Serial.println("Serial Connected To Arduino Successfully.");             
+          
   return 1;
 }
 
@@ -70,13 +77,10 @@ int UOM_RS_Robot::getID() {
 
   // Get the number if motors connected and their IDs.
 
-  // External Variables
-  // @ ID       - Array of connected motor IDs.
-
   // Internal Variables
-  // @ numID    - Number of connected IDs.
+  // @ num_ID    - Number of connected IDs.
   // @ tempID   - Temporary value for storing pre-checked ID value.
-  // @ SCSCL_ID - EPROM reference for accessing motor ID.
+  // @ SMS_STS_ID - EPROM reference for accessing motor ID.
 
   // Internal Functions
   // readByte() - Read a byte of data returned by the motors.
@@ -199,10 +203,8 @@ void UOM_RS_Robot::SerialMonitorMotorControl() {
   }
 
   DriveMotors();
-  // TO DO
-  // - Drive Motor
-
 }
+
 
 void UOM_RS_Robot::InitMotorFeedback() {
   ReadFeedback();
@@ -223,9 +225,6 @@ int UOM_RS_Robot::connectToMATLAB() {
 
   int start_timer = millis();
   while ( c != 'a' ) {
-    // if (millis() - start_timer > CONNECTION_TIMEOUT) {
-    //   return -1;
-    // }
     c = Serial.read();
   }
   Serial.println("b");
@@ -282,13 +281,9 @@ void UOM_RS_Robot::getDataSerial(double *serialData) {
   
 
   for (int i = 0; i < MAX_ID; i++) {
-    // serialData[i] = Serial.parseFloat(SKIP_NONE);
     serialData[i] = Serial.parseFloat();
   }
 
-  // while (Serial.available()) {  // Absorb any left over serial data before next command
-  //   Serial.read();
-  // }
 
   // Send acknowledgement that data has been received
   Serial.print(ACK_DATA_RECEIVED);
@@ -308,11 +303,6 @@ int UOM_RS_Robot::getState() {
     String input = Serial.readStringUntil('\n');
    
 
-    // // Absorb any left over serial data before next command
-    // while (Serial.available()) {  
-    //   Serial.read();
-    // }
-
     if (input == "FBK") {
       return READ_FB;
     }
@@ -321,9 +311,6 @@ int UOM_RS_Robot::getState() {
     }
     else if (input == "UDM") {
       return UPDATE_DRIVE_MODE;
-    }
-    else if (input == "UPD") {
-      return UPDATE_MOTOR;
     }
     else {
       return ERROR;
