@@ -156,12 +156,12 @@ void UOM_RS_Robot::DriveMotors() {
 
   for (int i=0; i<num_ID; i++) {
     if (control_mode[connected_ID[i]-1]) {
-      motors.WriteSpe(connected_ID[i], q_dot_STS[i]);
+      motors.WriteSpe(connected_ID[i], q_dot_STS[connected_ID[i]-1]);
     }
     else {
       u16 Speed = 0;
       u8 ACC = 50;
-      motors.WritePosEx(connected_ID[i], q_STS[i], Speed, ACC);
+      motors.WritePosEx(connected_ID[i], q_STS[connected_ID[i]-1], Speed, ACC);
     }
     
   }
