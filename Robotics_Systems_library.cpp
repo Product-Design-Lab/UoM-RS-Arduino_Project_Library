@@ -312,6 +312,12 @@ int UOM_RS_Robot::getState() {
     else if (input == "UDM") {
       return UPDATE_DRIVE_MODE;
     }
+    else if (input == "DON") {
+      return DIGITAL_PIN_ON;
+    }
+    else if (input == "DOF") {
+      return DIGITAL_PIN_OFF;
+    }
     else {
       return ERROR;
     }

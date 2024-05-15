@@ -43,7 +43,9 @@ static enum {
     IDLE,
     READ_FB,
     DRIVE_MOTOR,
-    UPDATE_DRIVE_MODE
+    UPDATE_DRIVE_MODE,
+    DIGITAL_PIN_ON,
+    DIGITAL_PIN_OFF
 } state = IDLE;
 
 
