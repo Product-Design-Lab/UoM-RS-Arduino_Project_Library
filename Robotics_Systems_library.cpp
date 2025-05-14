@@ -179,6 +179,22 @@ void UOM_RS_Robot::ReadFeedback() {
   }
 }
 
+void UOM_RS_Robot::ReadJoystick(int x_pin, int y_pin, int btn_pin) {
+  joy_input[0] = analogRead(x_pin);
+  joy_input[1] = analogRead(y_pin);
+  int tmp_btn = analogRead(btn_pin);
+
+  if (tmp_btn == 0 && (joy_input[1] > 200)) {
+    joy_input[2] = 1;
+  }
+  else {
+    joy_input[2] = 0;
+  }
+
+  
+
+}
+
 
 void UOM_RS_Robot::SerialMonitorMotorControl() {
   Serial.print("Enter Motor ID: ");
@@ -306,6 +322,9 @@ int UOM_RS_Robot::getState() {
     if (input == "FBK") {
       return READ_FB;
     }
+    else if (input == "JOY") {
+      return READ_JOY;
+    }
     else if (input == "DRV") {
       return DRIVE_MOTOR;
     }
@@ -333,6 +352,10 @@ void UOM_RS_Robot::sendAck(char ack) {
 
 void UOM_RS_Robot::SendFB2MATLAB() {
   sendDataSerial(q_FB_STS, MAX_ID);
+}
+
+void UOM_RS_Robot::SendJOY2MATLAB() {
+  sendDataSerial(joy_input, 3);
 }
 
 void UOM_RS_Robot::getReference() {

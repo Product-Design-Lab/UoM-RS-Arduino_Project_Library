@@ -42,6 +42,7 @@ Design Lab
 static enum {
     IDLE,
     READ_FB,
+    READ_JOY,
     DRIVE_MOTOR,
     UPDATE_DRIVE_MODE,
     DIGITAL_PIN_ON,
@@ -58,6 +59,7 @@ public:
   int connection_status;                                // Connection to MATLAB status
   u8 ID[MAX_ID];                                        // Array of sequential ID numbers up to MAX_ID
   u8 connected_ID[MAX_ID];                              // ID numbers of connected motors
+  s16 joy_input[3];                                      // Array of joystick input
   s16 q_FB_STS[MAX_ID];                                 // Array of stored feedback
   s16 q_STS[MAX_ID];                                    // Reference position of each motor stored in encoder counts
   s16 q_dot_STS[MAX_ID];                                // Reference velocity of each motor stored in encoder counts/sec
@@ -74,9 +76,11 @@ public:
   
   void DriveMotors();                                   // Drive the motors based on the stored reference positions & velocities
   void ReadFeedback();                                  // Read position feedback from the motors
+  void ReadJoystick(int x_pin, int y_pin, int btn_pin); // Read input from the joystick
   void InitMotorFeedback();                             // Read initial feedback & set internal position variable
   int getState();                                       // Check for state change from MATLAB
   void SendFB2MATLAB();                                 // Send feedback to MATLAB
+  void SendJOY2MATLAB();                                // Send joystick values to MATLAB
   void getReference();                                  // Read reference positions/velocities from MATLAB
   void sendMotorIDs();                                  // Send the ID of all connected motors to MATLAB
   void getControlMode();                                // Read the new control mode values for each motor
